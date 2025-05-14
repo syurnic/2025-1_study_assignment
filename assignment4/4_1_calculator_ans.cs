@@ -50,40 +50,27 @@ namespace calculator
     public class Calculator
     {
         // ---------- TODO ----------
-        
+        public double Calculate(double num1, string op, double num2) {
+            switch (op)
+            {
+                case "+":
+                    return num1 + num2;
+                case "-":
+                    return num1 - num2;
+                case "*":
+                    return num1 * num2;
+                case "/":
+                    if (num2 == 0)
+                        throw new DivideByZeroException("Division by zero is not allowed.");
+                    return num1 / num2;
+                case "%":
+                    return (int)num1 % (int)num2;
+                case "**":
+                    return Math.Pow((double)num1, (int)num2);
+                default:
+                    throw new InvalidOperationException($"Invalid operator");
+            }
+        }
         // --------------------
     }
 }
-
-/* example output
-
-Enter an expression (ex. 2 + 3):
->> 4 * 3
-Result: 12
-
-*/
-
-
-/* example output (CHALLANGE)
-
-Enter an expression (ex. 2 + 3):
->> 4 ** 3
-Result: 64
-
-Enter an expression (ex. 2 + 3):
->> 5 ** -2
-Result: 0.04
-
-Enter an expression (ex. 2 + 3):
->> 12 G 15
-Result: 3
-
-Enter an expression (ex. 2 + 3):
->> 12 L 15
-Result: 60
-
-Enter an expression (ex. 2 + 3):
->> 12 % 5
-Result: 2
-
-*/
