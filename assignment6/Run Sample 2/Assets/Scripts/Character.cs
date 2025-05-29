@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.Rendering;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -19,14 +20,18 @@ public class Character : MonoBehaviour
     {
         // 좌클릭시 RemainJump를 하나 소모하여 CharacterJumpPower의 힘으로 점프한다.
         // ---------- TODO ---------- 
-        
+        if (Input.GetMouseButtonDown(0) && RemainJump > 0)
+        {
+            --RemainJump;
+            Jump(CharacterJumpPower);
+        }
         // -------------------- 
     }
 
     // Jump with power
     void Jump(float power)
     {
-        GetComponent<Rigidbody2D>().AddForce(new Vector3(0, CharacterJumpPower, 0), ForceMode2D.Impulse);
+        GetComponent<Rigidbody2D>().AddForce(new Vector3(0, power, 0), ForceMode2D.Impulse);
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -34,7 +39,12 @@ public class Character : MonoBehaviour
         // tag가 Platform인 것과 충돌하면 RemainJump를 초기화한다.
         // tag가 Obstacle인 것과 충돌하면 게임 오버한다.
         // ---------- TODO ---------- 
-        
+        if (col.collider.CompareTag("Obstacle")) {
+            GM.GameOver();
+        } else if (col.collider.CompareTag("Platform"))
+        {
+            RemainJump = MaxJump;
+        }
         // -------------------- 
     }
 
@@ -42,7 +52,11 @@ public class Character : MonoBehaviour
     {
         // tag가 Point인 것과 충돌하면 Point를 하나 얻고, 충돌한 오브젝트를 삭제한다.
         // ---------- TODO ---------- 
-        
+        if (col.CompareTag("Point"))
+        {
+            Destroy(col.gameObject);
+        }
+        GM.GetPoint(1);
         // -------------------- 
     }
 }
